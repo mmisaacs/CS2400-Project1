@@ -5,9 +5,29 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     private int numOfEntries = 0;
     private T[] arraySet = (T[]) new Object[10];
 
+    private boolean isFull(){
+        return numOfEntries == arraySet.length;
+    }
+
     private void doubleCapacity(){
         int newLength = 2 * arraySet.length;
         arraySet = Arrays.copyOf(arraySet, newLength);
+    }
+
+    private int getIndexOf(T anEntry){
+        int location = -1;
+        boolean found = false;
+        int index = 0;
+
+        while (!found && (index < numOfEntries)){
+            if (anEntry.equals(arraySet[index])){
+                found = true;
+                location = index;
+            }
+            index++;
+        }
+
+        return location;
     }
 
     public int getCurrentSize() {
@@ -37,11 +57,16 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
 
     @Override
     public boolean remove(T anEntry) {
-        if(contains(anEntry)) {
-
+        //FINISH
+        int index = getIndexOf(anEntry);
+        T result = null;
+        if (!isEmpty() && (index >= 0)) {
+            result = arraySet[index];
+            T temp = arraySet[index];
+            arraySet[index] = null;
+            numOfEntries--;
         }
-
-        return false;
+        return anEntry.equals(result);
     }
 
     @Override
@@ -63,7 +88,11 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
 
     @Override
     public T[] toArray() {
-        return new Object[0];
+        T[] result = (T[]) new Object[numOfEntries];
+        for (int i = 0; i < numOfEntries; i++){
+            result[i] = arraySet[i];
+        }
+        return result;
     }
 
     @Override

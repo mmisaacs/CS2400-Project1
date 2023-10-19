@@ -2,9 +2,10 @@ package CS2400Project1;
 public interface SetInterface<T> {
     public int getCurrentSize();
     public boolean isEmpty();
+
+
     /* adds NEW item to set, will return true if added successfully
     returns false if item is already in set, no duplicates*/
-
     public boolean add(T newEntry);
 
     public T remove();
