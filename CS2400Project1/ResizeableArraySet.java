@@ -2,8 +2,24 @@ package CS2400Project1;
 import java.util.Arrays;
 
 public class ResizeableArraySet<T> implements SetInterface<T> {
-    private int numOfEntries = 0;
-    private T[] arraySet = (T[]) new Object[10];
+    private int numOfEntries;
+    private T[] arraySet;
+    private static final int defaultCap = 10;
+
+    //creating basic initialization for the Set
+    public ResizeableArraySet() {
+        this(defaultCap);
+    }
+
+    //initializing the Set according to the int provided
+    public ResizeableArraySet(int capacity){
+        numOfEntries = 0;
+
+        @SuppressWarnings("unchecked")
+        T[] tempSet = (T[])new Object[capacity];
+        arraySet = tempSet;
+    }
+
 
     private boolean isFull(){
         return numOfEntries == arraySet.length;
@@ -15,19 +31,16 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     }
 
     private int getIndexOf(T anEntry){
-        int location = -1;
-        boolean found = false;
         int index = 0;
 
-        while (!found && (index < numOfEntries)){
+        while (index < numOfEntries){
             if (anEntry.equals(arraySet[index])){
-                found = true;
-                location = index;
+                return index;
             }
             index++;
         }
 
-        return location;
+        return -1;
     }
 
     public int getCurrentSize() {
@@ -35,13 +48,13 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     }
 
     public boolean isEmpty() {
-        return numOfEntries == 0;
+        return numOfEntries != 0;
     }
     
     public boolean add(T newEntry) {
         if(!contains(newEntry)) {
             arraySet[numOfEntries] = newEntry;
-            ++numOfEntries;
+            numOfEntries++;
             return true;
         }
         return false;
@@ -51,7 +64,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     public T remove() {
         T temp = arraySet[numOfEntries];
         arraySet[numOfEntries] = null;
-        --numOfEntries;
+        numOfEntries--;
         return temp;
     }
 
@@ -61,17 +74,21 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         int index = getIndexOf(anEntry);
         T result = null;
         if (!isEmpty() && (index >= 0)) {
-            result = arraySet[index];
-            T temp = arraySet[index];
-            arraySet[index] = null;
+
+            T temp = arraySet[numOfEntries];
+            arraySet[index] = temp;
             numOfEntries--;
+            return true;
         }
-        return anEntry.equals(result);
+        else{
+            return false;
+        }
+
     }
 
     @Override
     public void clear() {
-        while (!isEmpty()) {
+        while (isEmpty()) {
             remove();
         }
     }
@@ -88,6 +105,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
 
     @Override
     public T[] toArray() {
+        @SuppressWarnings("unchecked")
         T[] result = (T[]) new Object[numOfEntries];
         for (int i = 0; i < numOfEntries; i++){
             result[i] = arraySet[i];
@@ -96,17 +114,50 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     }
 
     @Override
-    public SetInterface difference(SetInterface otherSet) {
-        return null;
+    public SetInterface<T> difference(SetInterface<T> otherSet) {
+        SetInterface<T> leftOver = new ResizeableArraySet<T>();
+//      first traversal
+        T[] firstArray = toArray();
+        T[] secondArray = otherSet.toArray();
+        for(int i = 0; i< firstArray.length; i++){
+            if(!otherSet.contains(firstArray[i])){
+                leftOver.add(firstArray[i]);
+            }
+        }
+        for(int i = 0; i< secondArray.length; i++){
+            if(!contains(secondArray[i])){
+                leftOver.add(secondArray[i]);
+            }
+        }
+
+        return leftOver;
     }
 
     @Override
-    public SetInterface intersection(SetInterface otherSet) {
-        return null;
+    public SetInterface<T> intersection(SetInterface<T> otherSet) {
+        SetInterface<T> intersectionSet = new ResizeableArraySet<T>();
+        T[] firstArray = toArray();
+        for(int i = 0; i <firstArray.length;i++){
+            if(otherSet.contains(firstArray[i])){
+                intersectionSet.add(firstArray[i]);
+            }
+        }
+        return intersectionSet;
     }
 
     @Override
-    public SetInterface union(SetInterface otherSet) {
-        return null;
+    public SetInterface<T> union(SetInterface<T> otherSet) {
+        SetInterface<T> unionSet = new ResizeableArraySet<T>();
+        T[] firstArray = toArray();
+        T[] secondArray = otherSet.toArray();
+        for (int i = 0; i < firstArray.length; i++){
+            unionSet.add(firstArray[i]);
+        }
+        for (int i = 0; i < secondArray.length; i++){
+            unionSet.add(secondArray[i]);
+        }
+
+
+        return unionSet;
     }
 }
