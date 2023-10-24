@@ -1,5 +1,6 @@
 package CS2400Project1;
-public interface SetInterface<T> {
+
+public class LinkedSet {
     public int getCurrentSize();
     public boolean isEmpty();
 

@@ -2,16 +2,16 @@ package CS2400Project1;
 import java.util.Arrays;
 
 public class ResizeableArraySet<T> implements SetInterface<T> {
-    private int numOfEntries;
     private T[] arraySet;
-    private static final int defaultCap = 10;
+    private int numOfEntries;
+    private static final int defaultCap = 25;
 
-    //creating basic initialization for the Set
+    //creating an empty set with the default capacity
     public ResizeableArraySet() {
         this(defaultCap);
     }
 
-    //initializing the Set according to the int provided
+    //initializing the Set according to the size provided
     public ResizeableArraySet(int capacity){
         numOfEntries = 0;
 
@@ -22,12 +22,11 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
 
 
     private boolean isFull(){
-        return numOfEntries == arraySet.length;
+        return numOfEntries >= arraySet.length;
     }
 
     private void doubleCapacity(){
-        int newLength = 2 * arraySet.length;
-        arraySet = Arrays.copyOf(arraySet, newLength);
+       arraySet = Arrays.copyOf(arraySet, 2 * arraySet.length);
     }
 
     private int getIndexOf(T anEntry){
@@ -48,7 +47,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     }
 
     public boolean isEmpty() {
-        return numOfEntries != 0;
+        return numOfEntries == 0;
     }
     
     public boolean add(T newEntry) {
@@ -103,6 +102,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return false;
     }
 
+    //creates an array with all the entries in set,, returns an array w the entries
     @Override
     public T[] toArray() {
         @SuppressWarnings("unchecked")
@@ -119,7 +119,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
 //      first traversal
         T[] firstArray = toArray();
         T[] secondArray = otherSet.toArray();
-        for(int i = 0; i< firstArray.length; i++){
+        for (int i = 0; i< firstArray.length; i++){
             if(!otherSet.contains(firstArray[i])){
                 leftOver.add(firstArray[i]);
             }
