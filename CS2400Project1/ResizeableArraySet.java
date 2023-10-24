@@ -51,6 +51,9 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     }
     
     public boolean add(T newEntry) {
+        if(isFull()){
+            doubleCapacity();
+        }
         if(!contains(newEntry)) {
             arraySet[numOfEntries] = newEntry;
             numOfEntries++;
@@ -61,33 +64,32 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
 
     @Override
     public T remove() {
-        T temp = arraySet[numOfEntries];
-        arraySet[numOfEntries] = null;
-        numOfEntries--;
+        T temp = null;
+        if (numOfEntries > 0) {
+            temp = arraySet[numOfEntries - 1];
+            arraySet[numOfEntries - 1] = null;
+            numOfEntries--;
+        }
         return temp;
     }
 
     @Override
     public boolean remove(T anEntry) {
-        //FINISH
         int index = getIndexOf(anEntry);
-        T result = null;
-        if (!isEmpty() && (index >= 0)) {
+        T temp = null;
 
-            T temp = arraySet[numOfEntries];
+        if (!isEmpty() && (index >= 0)) {
+            temp = arraySet[numOfEntries - 1];
             arraySet[index] = temp;
             numOfEntries--;
-            return true;
+            //return true;
         }
-        else{
-            return false;
-        }
-
+        return anEntry.equals(temp);
     }
 
-    @Override
+
     public void clear() {
-        while (isEmpty()) {
+        while (!isEmpty()) {
             remove();
         }
     }
@@ -102,7 +104,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return false;
     }
 
-    //creates an array with all the entries in set,, returns an array w the entries
+    //creates an array with all the entries in set, returns an array w the entries
     @Override
     public T[] toArray() {
         @SuppressWarnings("unchecked")
@@ -116,22 +118,14 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     @Override
     public SetInterface<T> difference(SetInterface<T> otherSet) {
         SetInterface<T> leftOver = new ResizeableArraySet<T>();
-//      first traversal
         T[] firstArray = toArray();
-        T[] secondArray = otherSet.toArray();
         for (int i = 0; i< firstArray.length; i++){
             if(!otherSet.contains(firstArray[i])){
                 leftOver.add(firstArray[i]);
-            }
-        }
-        for(int i = 0; i< secondArray.length; i++){
-            if(!contains(secondArray[i])){
-                leftOver.add(secondArray[i]);
-            }
-        }
-
+            } //end if
+        } //end for
         return leftOver;
-    }
+    } //end difference method
 
     @Override
     public SetInterface<T> intersection(SetInterface<T> otherSet) {
