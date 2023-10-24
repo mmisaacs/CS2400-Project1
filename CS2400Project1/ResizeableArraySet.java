@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class ResizeableArraySet<T> implements SetInterface<T> {
     private T[] arraySet;
     private int numOfEntries;
-    private static final int defaultCap = 25;
+    private static final int defaultCap = 5;
 
     //creating an empty set with the default capacity
     public ResizeableArraySet() {
