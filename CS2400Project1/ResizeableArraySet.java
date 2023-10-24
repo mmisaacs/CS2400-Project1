@@ -6,6 +6,14 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     private int numOfEntries;
     private static final int defaultCap = 5;
 
+    private boolean isFull(){
+        return numOfEntries >= arraySet.length;
+    }
+
+    private void doubleCapacity(){
+       arraySet = Arrays.copyOf(arraySet, 2 * arraySet.length);
+    }
+
     //creating an empty set with the default capacity
     public ResizeableArraySet() {
         this(defaultCap);
@@ -20,15 +28,6 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         arraySet = tempSet;
     }
 
-
-    private boolean isFull(){
-        return numOfEntries >= arraySet.length;
-    }
-
-    private void doubleCapacity(){
-       arraySet = Arrays.copyOf(arraySet, 2 * arraySet.length);
-    }
-
     private int getIndexOf(T anEntry){
         int index = 0;
 
@@ -38,7 +37,6 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
             }
             index++;
         }
-
         return -1;
     }
 
@@ -51,10 +49,10 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
     }
     
     public boolean add(T newEntry) {
-        if(isFull()){
+        if(isFull()){ //checks if resizing is necessary
             doubleCapacity();
         }
-        if(!contains(newEntry)) {
+        if(!contains(newEntry)) { //adds entry if not found in set
             arraySet[numOfEntries] = newEntry;
             numOfEntries++;
             return true;
@@ -62,6 +60,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return false;
     }
 
+    //removes last entry of set
     @Override
     public T remove() {
         T temp = null;
@@ -73,6 +72,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return temp;
     }
 
+    //removes the entry provided, looking for value, not numOfEntries value
     @Override
     public boolean remove(T anEntry) {
         int index = getIndexOf(anEntry);
@@ -87,13 +87,14 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return anEntry.equals(temp);
     }
 
-
+    //removes all entries
     public void clear() {
         while (!isEmpty()) {
             remove();
         }
     }
 
+    //checks for a value within set
     @Override
     public boolean contains(T anEntry) {
         for(int i = 0; i < numOfEntries; ++i) {
@@ -115,6 +116,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return result;
     }
 
+    //differing entries in both sets
     @Override
     public SetInterface<T> difference(SetInterface<T> otherSet) {
         SetInterface<T> leftOver = new ResizeableArraySet<T>();
@@ -127,6 +129,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return leftOver;
     } //end difference method
 
+    //common entries in both sets
     @Override
     public SetInterface<T> intersection(SetInterface<T> otherSet) {
         SetInterface<T> intersectionSet = new ResizeableArraySet<T>();
@@ -139,6 +142,7 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         return intersectionSet;
     }
 
+    //combine sets
     @Override
     public SetInterface<T> union(SetInterface<T> otherSet) {
         SetInterface<T> unionSet = new ResizeableArraySet<T>();
@@ -150,8 +154,6 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
         for (int i = 0; i < secondArray.length; i++){
             unionSet.add(secondArray[i]);
         }
-
-
         return unionSet;
     }
 }

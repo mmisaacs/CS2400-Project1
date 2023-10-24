@@ -41,19 +41,23 @@ public class ArraySetTest {
         testAdd(set2, secondSet);
         System.out.println();
 
+        //creating new set that combines set1 and set2
         System.out.println("Creating the union set...");
         SetInterface<Integer> everything = set1.union(set2);
         displaySet(everything);
         System.out.println();
 
+        //finding entries that are in set1 and set2
         System.out.println("Creating the intersection set...");
         SetInterface<Integer> commonItems = set1.intersection(set2);
         displaySet(commonItems);
         System.out.println();
 
+        //finding entries that are in set1 but not set2
         System.out.println("Unique entries in Set 1:");
         SetInterface<Integer> leftOver1 = set1.difference(set2);
         displaySet(leftOver1);
+        //finding entries that are in set2 but not set1
         System.out.println("Unique entries in Set 2");
         SetInterface<Integer> leftOver2 = set2.difference(set1);
         displaySet(leftOver2);
@@ -69,6 +73,7 @@ public class ArraySetTest {
 
     }
 
+    //print provided entries, add to set without repeats
     public static void testAdd(SetInterface<Integer> set, int[] content){
         System.out.println("Populating the set...");
         for(int i = 0; i < content.length; i++){
