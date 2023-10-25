@@ -1,5 +1,4 @@
 package CS2400Project1;
-import java.util.Arrays;
 
 public class LinkedSet<T> implements SetInterface<T>{
     private Node firstNode;
@@ -97,7 +96,7 @@ public class LinkedSet<T> implements SetInterface<T>{
     }
 
     public SetInterface<T> union(SetInterface<T> otherSet){
-        SetInterface<T> unionSet = new ResizeableArraySet<T>();
+        SetInterface<T> unionSet = new ResizeableArraySet<>();
         T[] firstArray = toArray();
         T[] secondArray = otherSet.toArray();
         for (int i = 0; i < firstArray.length; i++){
@@ -109,7 +108,7 @@ public class LinkedSet<T> implements SetInterface<T>{
         return unionSet;
     }
     public SetInterface<T> intersection(SetInterface<T> otherSet){
-        SetInterface<T> intersectionSet = new LinkedSet<T>();
+        SetInterface<T> intersectionSet = new LinkedSet<>();
         T[] firstArray = toArray();
         for(int i = 0; i <firstArray.length;i++){
             if(otherSet.contains(firstArray[i])){
@@ -119,7 +118,7 @@ public class LinkedSet<T> implements SetInterface<T>{
         return intersectionSet;
     }
     public SetInterface<T> difference(SetInterface<T> otherSet){
-        SetInterface<T> leftOver = new ResizeableArraySet<T>();
+        SetInterface<T> leftOver = new ResizeableArraySet<>();
         T[] firstArray = toArray();
         for (int i = 0; i< firstArray.length; i++){
             if(!otherSet.contains(firstArray[i])){

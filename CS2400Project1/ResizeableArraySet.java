@@ -82,9 +82,9 @@ public class ResizeableArraySet<T> implements SetInterface<T> {
             temp = arraySet[numOfEntries - 1];
             arraySet[index] = temp;
             numOfEntries--;
-            //return true;
+            return true;
         }
-        return anEntry.equals(temp);
+        return false;
     }
 
     //removes all entries

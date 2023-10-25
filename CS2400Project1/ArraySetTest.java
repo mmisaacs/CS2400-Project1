@@ -6,7 +6,8 @@ public class ArraySetTest {
         SetInterface<Integer> set1 = new ResizeableArraySet<>();
 
         //check that the set is empty
-        System.out.println("Is the Set1 empty? " + set1.isEmpty());
+        System.out.println("Creating a Resizable Set, Set1");
+        System.out.println("Testing isEmpty(), Is the Set1 empty? " + set1.isEmpty());
 
         //attempt to fill the set, fillSet is the given entries
         int[] fillSet = {1, 2, 3, 1, 4, 2, 5, 4, 2, 3, 1, 2, 5};
@@ -18,19 +19,18 @@ public class ArraySetTest {
         System.out.println();
 
         //check for 1 (true) and 7(false) in set
+        System.out.println("Testing contains() method.");
         System.out.println("Is 1 in the Set1? " + set1.contains(1));
         System.out.println("Is 7 in the Set1? " + set1.contains(7));
         System.out.println();
 
-        //remove last entry (4) and print updated set (should look like: 1 2 3)
-        System.out.println("Removing last entry...");
-        set1.remove();
+        //remove last entry (4) and print updated set (should look like: 1 2 3 4)
+        System.out.println("Testing remove(), it removes entry: " + set1.remove());
         displaySet(set1);
         System.out.println();
 
-        //remove the second entry and print updated set (should look like: 1 3)
-        System.out.println("Removing second entry...");
-        set1.remove(2);
+        //remove the second entry and print updated set (should look like: 1 4 3)
+        System.out.println("testing remove(), did it remove entry 2? " + set1.remove(2));
         displaySet(set1);
         System.out.println();
 
@@ -42,29 +42,29 @@ public class ArraySetTest {
         System.out.println();
 
         //creating new set that combines set1 and set2
-        System.out.println("Creating the union set...");
+        System.out.println("Creating the union set of Set1 and Set2.");
         SetInterface<Integer> everything = set1.union(set2);
         displaySet(everything);
         System.out.println();
 
         //finding entries that are in set1 and set2
-        System.out.println("Creating the intersection set...");
+        System.out.println("Creating the intersection set of Set1 and Set2.");
         SetInterface<Integer> commonItems = set1.intersection(set2);
         displaySet(commonItems);
         System.out.println();
 
         //finding entries that are in set1 but not set2
-        System.out.println("Difference between Set1 and Set2 (Set1 - Set2):");
+        System.out.println("difference() of Set1 and Set2 (Set1 - Set2):");
         SetInterface<Integer> leftOver1 = set1.difference(set2);
         displaySet(leftOver1);
         //finding entries that are in set2 but not set1
-        System.out.println("Difference between Set2 and Set1 (Set2 - Set1):");
+        System.out.println("difference() of Set2 and Set1 (Set2 - Set1):");
         SetInterface<Integer> leftOver2 = set2.difference(set1);
         displaySet(leftOver2);
         System.out.println();
 
         //clear the set
-        System.out.println("Clearing all entries...");
+        System.out.println("Testing clear() for all entries...");
         set1.clear();
         set2.clear();
         System.out.println("Is the set 1 empty? " + set1.isEmpty());
