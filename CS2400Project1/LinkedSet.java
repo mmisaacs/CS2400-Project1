@@ -5,6 +5,18 @@ public class LinkedSet<T> implements SetInterface<T>{
     private Node firstNode;
     private int numOfEntries;
 
+    private Node getReferenceTo(T anEntry){
+        boolean found = false;
+        Node currentNode = firstNode;
+        while(!found && (currentNode != null)){
+            if(anEntry.equals(currentNode.data))
+                found = true;
+            else
+                currentNode = currentNode.next;
+        }
+        return currentNode;
+    }
+
     //default constructor
     public LinkedSet(){
         firstNode = null;
@@ -20,13 +32,17 @@ public class LinkedSet<T> implements SetInterface<T>{
 
     public boolean add(T newEntry){
         //add to beginning
-        Node newNode = new Node(newEntry);
-        newNode.next = firstNode; //connect to rest of chain
-        firstNode = newNode; //add to beginning
-        numOfEntries++;
-        return true;
+        if(!contains(newEntry)) {
+            Node newNode = new Node(newEntry);
+            newNode.next = firstNode; //connect to rest of chain
+            firstNode = newNode; //add to beginning
+            numOfEntries++;
+            return true;
+        }
+        return false;
     }
 
+    //will remove most recent added entry (aka, the first entry)
     public T remove(){
         T result = null; //make value blank
         if (firstNode != null){
@@ -37,7 +53,15 @@ public class LinkedSet<T> implements SetInterface<T>{
         return result;
     }
     public boolean remove(T anEntry){
-        return false;
+        boolean result = false;
+        Node locate = getReferenceTo(anEntry);
+        if(locate != null){
+            locate.data = firstNode.data;
+            firstNode = firstNode.next;
+            numOfEntries--;
+            result = true;
+        }
+        return result;
     }
 
     public void clear(){
@@ -49,9 +73,9 @@ public class LinkedSet<T> implements SetInterface<T>{
     public boolean contains(T anEntry){
         boolean found = false;
         Node currentNode = firstNode;
-        while(!false && (currentNode != null)){
-            if(anEntry.equals(currentNode.getData()))
-                found = true;
+        while(!found && (currentNode != null)){
+            if(anEntry.equals(currentNode.getData())) //locate node
+                found = true; //return true if found
             else
                 currentNode = currentNode.getNextNode();
         }
@@ -65,21 +89,44 @@ public class LinkedSet<T> implements SetInterface<T>{
         int i = 0;
         Node currentNode = firstNode;
         while((i < numOfEntries) && (currentNode != null)){
-            result[i] = currentNode.data;
+            result[i] = currentNode.getData();
             i++;
-            currentNode = currentNode.next;
+            currentNode = currentNode.getNextNode();
         }
         return result;
     }
 
     public SetInterface<T> union(SetInterface<T> otherSet){
-        return null;
+        SetInterface<T> unionSet = new ResizeableArraySet<T>();
+        T[] firstArray = toArray();
+        T[] secondArray = otherSet.toArray();
+        for (int i = 0; i < firstArray.length; i++){
+            unionSet.add(firstArray[i]);
+        }
+        for (int i = 0; i < secondArray.length; i++){
+            unionSet.add(secondArray[i]);
+        }
+        return unionSet;
     }
     public SetInterface<T> intersection(SetInterface<T> otherSet){
-        return null;
+        SetInterface<T> intersectionSet = new LinkedSet<T>();
+        T[] firstArray = toArray();
+        for(int i = 0; i <firstArray.length;i++){
+            if(otherSet.contains(firstArray[i])){
+                intersectionSet.add(firstArray[i]);
+            }
+        }
+        return intersectionSet;
     }
     public SetInterface<T> difference(SetInterface<T> otherSet){
-        return null;
+        SetInterface<T> leftOver = new ResizeableArraySet<T>();
+        T[] firstArray = toArray();
+        for (int i = 0; i< firstArray.length; i++){
+            if(!otherSet.contains(firstArray[i])){
+                leftOver.add(firstArray[i]);
+            } //end if
+        } //end for
+        return leftOver;
     }
 
     private class Node{
