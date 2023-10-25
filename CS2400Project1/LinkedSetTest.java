@@ -52,15 +52,22 @@ public class LinkedSetTest {
         System.out.println();
 
         //finding entries that are in set1 but not set2
-        System.out.println("Unique entries in Set 1 (Set1 - Set2):");
+        System.out.println("Difference between Set1 and Set2 (Set1 - Set2):");
         SetInterface<Integer> leftOver1 = set1.difference(set2);
         displaySet(leftOver1);
 
         //finding entries that are in set2 but not set1
-        System.out.println("Unique entries in Set 2 (Set2 - Set1):");
+        System.out.println("Difference between Set2 and Set1 (Set2 - Set1):");
         SetInterface<Integer> leftOver2 = set2.difference(set1);
         displaySet(leftOver2);
         System.out.println();
+
+        //clear the set
+        System.out.println("Clearing all entries...");
+        set1.clear();
+        set2.clear();
+        System.out.println("Is the set 1 empty? " + set1.isEmpty());
+        System.out.println("Is the set 2 empty? " + set2.isEmpty());
     }
 
     public static void testAdd(SetInterface<Integer> set, int[] content){
